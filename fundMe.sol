@@ -21,7 +21,7 @@ contract fundMe {
         - Undo any actions that have been done, and send the remaining gas back
 
     */
-        require(msg.value >= minimumUsd, "Didn't send enough ETH"); 
+        require(msg.value >= minimumUsd, "Did not send enough ETH"); 
         // 1e18 = 1 ETH = 1000000000000000000 = 1 * 10 ** 18
         // Gas cost is mostly in gwei
     }
