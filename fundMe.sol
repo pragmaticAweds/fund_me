@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-contract fundMe {
-        uint256 public minimumUsd = 5;
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-    function fund () public payable  {
 
     /*
         Objectives At the end:
@@ -21,12 +19,43 @@ contract fundMe {
         - Undo any actions that have been done, and send the remaining gas back
 
     */
+
+
+contract fundMe {
+        uint256 public minimumUsd = 5;
+
+    function fund () public payable  {
+
         require(msg.value >= minimumUsd, "Did not send enough ETH"); 
         // 1e18 = 1 ETH = 1000000000000000000 = 1 * 10 ** 18
         // Gas cost is mostly in gwei
     }
 
-        function getPrice() public {}
+
+    function getPrice() view public returns(uint256) {
+
+
+    // 0x694AA1769357215DE4FAC081bf1f309aDC325306 ETH/USD Sepolia Address
+    // ABI
+
+    AggregatorV3Interface priceFeed =  AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+
+   
+        // prettier-ignore
+        (
+            /* uint80 roundID */,
+            int256 answer, //price of eth in terms of usd - 2000.00000000
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = priceFeed.latestRoundData();
+
+        return uint256(answer * 1e10);
+
+        }
+
+     
+
         function getConversionRate() public {}
 
     // function withdraw () public {}
